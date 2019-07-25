@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "react-dev": "webpack -d --watch",
     "start": "nodemon server/index.js",
-    "seed": "node database/seed.js"
+    "seed": "node database/newSeed.js",
+    "seed-max": "node --max-old-space-size=8192 database/newSeed.js"
   },
   "repository": {
     "type": "git",
@@ -26,7 +27,10 @@
     "axios": "^0.19.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
+    "csv-write-stream": "^2.0.0",
     "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "mongodb": "^3.3.0-beta2",
     "mongoose": "^5.6.3",
     "nodemon": "^1.19.1",
     "react": "^16.8.6",
