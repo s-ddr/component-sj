@@ -1,15 +1,12 @@
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost/searchcomp')
+// const alphabet = require('./schema.js');
 
-let schema = mongoose.Schema({name: String})
-let searchSchema = mongoose.Schema({name: String, categories: Array, descriptions: Array})
+const searchSchema = mongoose.Schema({name: String, categories: Array, descriptions: Array})
+const SearchObj = mongoose.model('SearchObjects', searchSchema)
 
-let Category = mongoose.model('Category', schema)
-let Description = mongoose.model('Description', schema)
-let SearchObj = mongoose.model('SearchObjects', searchSchema)
-
-
+mongoose.connect('mongodb://localhost/Search', {useNewUrlParser: true})
 const db = mongoose.connection
+mongoose.Promise = global.Promise;
 
 db.on('error', function() {
     console.error('failed to connect')
@@ -18,10 +15,23 @@ db.once('open', function() {
     console.log('successful connection')
 })
 
-mongoose.Promise = global.Promise;
-
 module.exports = {
-    Category,
-    Description,
-    SearchObj
+    SearchObj,
+    db
 }
+
+// db.searchobjects.createIndex( { name: "text" } )
+
+// db.searchobjects.find({
+//     $and:[{
+//         $text: {
+//             $search: "c"
+//         }},{
+//         name: {
+//             $elemMatch: {$regex: "^cha"}}
+//         }]
+//     });
+
+// db.searchobjects.find({
+//     name: {$regex: /cha/i}
+//     });
