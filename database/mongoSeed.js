@@ -204,16 +204,17 @@ const names =
 'Pie safe'
 ]
 
+const mongoose = require('mongoose');
+const fs = require('fs');
+const csvWriter = require('csv-write-stream');
+var writer = csvWriter();
+var counter = 0;
+
 // returns random element from an array
 const randomizer = (array) => {
   let randomNum = Math.floor(Math.random() * ( array.length ));
   return array[randomNum];
 };
-
-const fs = require('fs');
-const csvWriter = require('csv-write-stream');
-var writer = csvWriter();
-var counter = 0;
 
 const dataGenerator = () => {
   writer.pipe(fs.createWriteStream('./data.csv'));
@@ -230,7 +231,7 @@ const dataGenerator = () => {
   console.log('Data created!')
 }
 
-// dataGenerator();
+dataGenerator();
 
 module.exports = {
   names, 

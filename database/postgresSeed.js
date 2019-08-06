@@ -20,22 +20,22 @@ const randomizer = (array, maximum) => {
 // These tables are for the main table (Product) to refer to.
 const createCategoryTable = () => {
   for (let i = 0; i < data.categories.length; i++) {
-    db.Category.create({name: data.categories[i]})
-      .then(() => { console.log('seedin')} )
+    db.Category.create({name: data.categories[i + 1]})
+      .then(() => {} )
       .catch((err) => { console.log('error', err)})
   }
 };
 const createDescriptionTable = () => {
   for (let i = 0; i < data.descriptions.length; i++) {
-    db.Description.create({name: data.descriptions[i]})
-    .then(() => { console.log('seedin')} )
+    db.Description.create({name: data.descriptions[i + 1]})
+    .then(() => {} )
     .catch((err) => { console.log('error', err)})
   }
-  console.log('description and category tables seeded')
 };
 
 createCategoryTable();
 createDescriptionTable();
+console.log('description and category tables seeded')
 
 // Writes a .csv with 10 million records to the Product table
 const dataGenerator = () => {
@@ -43,14 +43,14 @@ const dataGenerator = () => {
   for (let i = 0; i < 10000000; i++) {
     writer.write({
       name: randomizer(data.names),
-      category1: randomizer(0, 50),
-      category2: randomizer(0, 50), 
-      category3: randomizer(0, 50),
-      description1: randomizer(0, 52), 
-      description2: randomizer(0, 52), 
-      description3: randomizer(0, 52), 
-      description4: randomizer(0, 52), 
-      description5: randomizer(0, 52)
+      category1: randomizer(0, 48) + 1,
+      category2: randomizer(0, 48) + 1, 
+      category3: randomizer(0, 48) + 1,
+      description1: randomizer(0, 50) + 1, 
+      description2: randomizer(0, 51) + 1, 
+      description3: randomizer(0, 51) + 1, 
+      description4: randomizer(0, 51) + 1, 
+      description5: randomizer(0, 51) + 1
     })
   }
   writer.end();
