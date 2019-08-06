@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-// const alphabet = require('./schema.js');
 
 const searchSchema = mongoose.Schema({name: String, categories: Array, descriptions: Array})
 const SearchObj = mongoose.model('SearchObjects', searchSchema)
@@ -19,19 +18,3 @@ module.exports = {
     SearchObj,
     db
 }
-
-// db.searchobjects.createIndex( { name: "text" } )
-
-// db.searchobjects.find({
-//     $and:[{
-//         $text: {
-//             $search: "c"
-//         }},{
-//         name: {
-//             $elemMatch: {$regex: "^cha"}}
-//         }]
-//     });
-
-// db.searchobjects.find({
-//     name: {$regex: /cha/i}
-//     });

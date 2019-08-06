@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const SearchObj = require('./index.js');
+const SearchObj = require('./mongoIndex.js');
 
 // mongoose.connection.collections['searchobjects'].drop( function(err) {
 //     console.log('collection dropped');
@@ -204,20 +204,17 @@ const names =
 'Pie safe'
 ]
 
-const randomizer = (array, maximum) => {
-  let max = maximum || array.length - 1;
-  let randomNum = Math.floor(Math.random() * ( max + 1 ));
-  if (array) {
-    return array[randomNum];
-  } else {
-    return randomNum;
-  };
-};
-
+const mongoose = require('mongoose');
 const fs = require('fs');
 const csvWriter = require('csv-write-stream');
 var writer = csvWriter();
 var counter = 0;
+
+// returns random element from an array
+const randomizer = (array) => {
+  let randomNum = Math.floor(Math.random() * ( array.length ));
+  return array[randomNum];
+};
 
 const dataGenerator = () => {
   writer.pipe(fs.createWriteStream('./data.csv'));
@@ -235,6 +232,12 @@ const dataGenerator = () => {
 }
 
 dataGenerator();
+
+module.exports = {
+  names, 
+  descriptions, 
+  categories
+};
 
 
 // // creates one set of 10,000 records

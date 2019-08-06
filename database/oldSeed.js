@@ -1,12 +1,9 @@
 const mongoose = require('mongoose');
-const models = require('./index.js');
+const models = require('./mongoIndex.js');
 
 mongoose.connection.collections['descriptions','categories','searchobjects'].drop( function(err) {
     console.log('collection dropped');
 });
-
-
-
 
 const categorySeedData = [
   { name: "Living Room" },
