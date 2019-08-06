@@ -10,7 +10,7 @@
     "pg-seed": "node database/postgresSeed.js",
     "pg-seed-max": "node --max-old-space-size=8192 database/postgresSeed.js",
     "mdb-seed": "node database/mongoSeed.js",
-    "mdb-seed-max": "node --max-old-space-size=8192 database/mongoSeed.js"
+    "mdb-seed-max": "node --max-old-space-size=1000 database/mongoSeed.js" 
   },
   "repository": {
     "type": "git",

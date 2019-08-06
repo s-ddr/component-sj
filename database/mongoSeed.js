@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const SearchObj = require('./mongoIndex.js');
 
 // mongoose.connection.collections['searchobjects'].drop( function(err) {
@@ -206,9 +205,7 @@ const names =
 
 const mongoose = require('mongoose');
 const fs = require('fs');
-const csvWriter = require('csv-write-stream');
-var writer = csvWriter();
-var counter = 0;
+const csvStream = fs.createWriteStream('data.csv');
 
 // returns random element from an array
 const randomizer = (array) => {
@@ -216,60 +213,49 @@ const randomizer = (array) => {
   return array[randomNum];
 };
 
+const randomizedProduct = () => {
+  return '' + i + randomizer(names) + randomizer(categories) + randomizer(descriptions);
+}
+
+let i = 0;
+
+csvStream.write('id,name,categories,descriptions\n');
+
 const dataGenerator = () => {
-  writer.pipe(fs.createWriteStream('./data.csv'));
-  for (let i = 0; i <= 10000000; i++) {
-    writer.write({
-      id: counter++,
-      name: randomizer(names),
-      categories: [randomizer(categories), randomizer(categories), randomizer(categories)],
-      descriptions: [randomizer(descriptions), randomizer(descriptions), randomizer(descriptions), randomizer(descriptions), randomizer(descriptions)]
-    })
+  var ok = true;
+  do {
+    i++;
+    if (i % 1000000 === 0) { console.log(`${i} documents created`) }
+    if (i === 10000000) {
+      csvStream.write(randomizedProduct(), 'utf8', () => { csvStream.end(); mongoose.connection.close(); });
+    } else {
+      ok = csvStream.write(randomizedProduct(), 'utf8');
+    }
+  } while (i <= 10000000 && ok);
+  if (i > 0) {
+    csvStream.once('drain', dataGenerator);
   }
-  writer.end();
-  mongoose.connection.close();
-  console.log('Data created!')
 }
 
 dataGenerator();
+// const dataGenerator = () => {
+//   writer.pipe(fs.createWriteStream('./data.csv'));
+//   for (let i = 0; i <= 10000000; i++) {
+//     writer.write({
+//       id: counter++,
+//       name: randomizer(names),
+//       categories: [randomizer(categories), randomizer(categories), randomizer(categories)],
+//       descriptions: [randomizer(descriptions), randomizer(descriptions), randomizer(descriptions), randomizer(descriptions), randomizer(descriptions)]
+//     })
+//   }
+  // writer.end();
+  // mongoose.connection.close();
+//   console.log('Data created!')
+// }
+
 
 module.exports = {
   names, 
   descriptions, 
   categories
 };
-
-
-// // creates one set of 10,000 records
-// const dataCreator = () => {
-//   let arr = [];
-//   for (let i = 0; i < 10000; i++) {
-//     console.log('creating')
-//     arr.push({
-//       name: randomizer(names),
-//       categories: [randomizer(categories), randomizer(categories), randomizer(categories)],
-//       descriptions: [randomizer(descriptions), randomizer(descriptions), randomizer(descriptions), randomizer(descriptions), randomizer(descriptions)]
-//     })
-//   }
-//   return arr;
-// }
-
-// // seeds one set of 10,000 records
-// const seeder = () => {
-//     SearchObj.insertMany(dataCreator())
-//     .then(() => {
-//       mongoose.connection.close();
-//       console.log('success')
-//     })
-//     .catch(() => console.log('gosh hecking darnit', err)) 
-// }
-
-// // // seeds i amount x 10,000 records
-// // const seeder = () => {
-// //   for (let i = 0; i < 100; i++) {
-// //     SearchObj.insertMany(miniSeeder())
-// //     .then(() => console.log('success'))
-// //     .catch(() => console.log('gosh hecking darnit', err))
-// //   }
-// //   // mongoose.connection.close();
-// // }
